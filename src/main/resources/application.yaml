@@ -2,7 +2,9 @@ spring:
   application:
     name: TaskTracker
   datasource:
-    driverClassName: com.mysql.jdbc.Driver
+    driverClassName: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/task_tracker
     username: root
     password: root
+  flyway:
+    locations: classpath:db/migration
