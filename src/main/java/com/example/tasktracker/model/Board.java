@@ -20,7 +20,7 @@ public class Board implements Serializable {
     private static final long serialVersionUID = -5449326074498337967L;
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     private String title;
@@ -38,7 +38,7 @@ public class Board implements Serializable {
     @OneToMany(mappedBy = "board")
     private java.util.List<List> lists;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "board_admin",
             joinColumns = @JoinColumn(name = "board_id"),
@@ -46,7 +46,7 @@ public class Board implements Serializable {
     )
     private java.util.List<User> admins;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "board_guest",
             joinColumns = @JoinColumn(name = "board_id"),

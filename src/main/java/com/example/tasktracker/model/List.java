@@ -23,7 +23,7 @@ public class List implements Serializable {
     private static final long serialVersionUID = -5449326074498337969L;
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     private String title;
@@ -37,18 +37,18 @@ public class List implements Serializable {
     private Board board;
 
     @OneToMany(mappedBy = "list")
-    private java.util.List<Card> cards;
+    private java.util.List<Task> tasks;
 
-    public void addCard(Card card) {
-        if (cards == null) {
-            cards = new java.util.ArrayList<>();
+    public void addTask(Task task) {
+        if (tasks == null) {
+            tasks = new java.util.ArrayList<>();
         }
-        cards.add(card);
+        tasks.add(task);
     }
 
-    public void removeCard(Card card) {
-        if (cards != null) {
-            cards.remove(card);
+    public void removeTask(Task task) {
+        if (tasks != null) {
+            tasks.remove(task);
         }
     }
 }

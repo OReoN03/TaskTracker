@@ -8,7 +8,7 @@ import java.util.Optional;
 public interface BoardRepository {
     List<Board> findAll();
 
-    Board save(Board card);
+    Board save(Board board);
 
     Optional<Board> findById(Integer id);
 

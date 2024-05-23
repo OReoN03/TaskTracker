@@ -15,12 +15,12 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "card")
+@Table(name = "task")
 @Data
 @Getter
 @Setter
 @RequiredArgsConstructor
-public class Card implements Serializable {
+public class Task implements Serializable {
     @Serial
     private static final long serialVersionUID = -5449326074498337968L;
 

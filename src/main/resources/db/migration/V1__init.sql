@@ -18,7 +18,9 @@ CREATE TABLE user
 CREATE TABLE user_role
 (
     user_id INT NOT NULL,
-    role_id INT NOT NULL
+    role_id INT NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES user (id),
+    FOREIGN KEY (role_id) REFERENCES role (id)
 );
 
 CREATE TABLE workspace
@@ -28,22 +30,56 @@ CREATE TABLE workspace
     description TEXT
 );
 
+CREATE TABLE workspace_admin
+(
+    workspace_id INT NOT NULL,
+    admin_id     INT NOT NULL,
+    FOREIGN KEY (workspace_id) REFERENCES workspace (id),
+    FOREIGN KEY (admin_id) REFERENCES user (id)
+);
+
+CREATE TABLE workspace_guest
+(
+    workspace_id INT NOT NULL,
+    guest_id     INT NOT NULL,
+    FOREIGN KEY (workspace_id) REFERENCES workspace (id),
+    FOREIGN KEY (guest_id) REFERENCES user (id)
+);
+
 CREATE TABLE board
 (
     id           INT PRIMARY KEY AUTO_INCREMENT,
     title        VARCHAR(255) NOT NULL,
     description  TEXT,
-    workspace_id INT          NOT NULL
+    workspace_id INT          NOT NULL,
+    FOREIGN KEY (workspace_id) REFERENCES workspace (id)
+);
+
+CREATE TABLE board_admin
+(
+    board_id INT NOT NULL,
+    admin_id INT NOT NULL,
+    FOREIGN KEY (board_id) REFERENCES board (id),
+    FOREIGN KEY (admin_id) REFERENCES user (id)
+);
+
+CREATE TABLE board_guest
+(
+    board_id INT NOT NULL,
+    guest_id INT NOT NULL,
+    FOREIGN KEY (board_id) REFERENCES board (id),
+    FOREIGN KEY (guest_id) REFERENCES user (id)
 );
 
 CREATE TABLE list
 (
     id       INT PRIMARY KEY AUTO_INCREMENT,
     title    VARCHAR(255) NOT NULL,
-    board_id INT          NOT NULL
+    board_id INT          NOT NULL,
+    FOREIGN KEY (board_id) REFERENCES board (id)
 );
 
-CREATE TABLE card
+CREATE TABLE task
 (
     id          INT PRIMARY KEY AUTO_INCREMENT,
     title       VARCHAR(255) NOT NULL,
@@ -51,7 +87,9 @@ CREATE TABLE card
     label       VARCHAR(255),
     deadline    DATETIME,
     assignee_id INT,
-    list_id     INT          NOT NULL
+    list_id     INT          NOT NULL,
+    FOREIGN KEY (assignee_id) REFERENCES user (id),
+    FOREIGN KEY (list_id) REFERENCES list (id)
 );
 
 INSERT INTO role (name)
@@ -73,10 +111,22 @@ VALUES ("Workspace1", NULL),
        ("Workspace2", NULL),
        ("Workspace3", NULL);
 
+INSERT INTO workspace_admin (workspace_id, admin_id)
+VALUES (1, 1), (2, 1), (3, 1);
+
+INSERT INTO workspace_guest (workspace_id, guest_id)
+VALUES (1, 2), (1, 3), (1, 4);
+
 INSERT INTO board (title, description, workspace_id)
 VALUES ("Project1", NULL, 1),
        ("Project2", NULL, 1),
        ("Project3", NULL, 2);
+
+INSERT INTO board_admin (board_id, admin_id)
+VALUES (1, 1), (2, 1), (3, 1);
+
+INSERT INTO board_guest (board_id, guest_id)
+VALUES (1, 2), (1, 3), (2, 4);
 
 INSERT INTO list (title, board_id)
 VALUES ("To do", 1),
@@ -89,7 +139,7 @@ VALUES ("To do", 1),
        ("Doing", 3),
        ("Done", 3);
 
-INSERT INTO card (title, description, label, deadline, assignee_id, list_id)
+INSERT INTO task (title, description, label, deadline, assignee_id, list_id)
 VALUES ("Task1", NULL, NULL, "2024-06-17 18:00:00", 2, 1),
        ("Task2", NULL, NULL, "2024-06-20 18:00:00", 2, 2),
        ("Task3", NULL, NULL, "2024-06-10 18:00:00", 3, 3),

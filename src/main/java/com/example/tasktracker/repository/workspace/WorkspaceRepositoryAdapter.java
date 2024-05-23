@@ -18,8 +18,8 @@ public class WorkspaceRepositoryAdapter implements WorkspaceRepository {
     }
 
     @Override
-    public Workspace save(Workspace card) {
-        return workspaceJpaRepository.save(card);
+    public Workspace save(Workspace workspace) {
+        return workspaceJpaRepository.save(workspace);
     }
 
     @Override

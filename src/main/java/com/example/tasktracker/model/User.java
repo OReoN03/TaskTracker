@@ -17,7 +17,7 @@ public class User implements Serializable {
     private static final long serialVersionUID = -5449326074498337970L;
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @NaturalId
@@ -38,12 +38,4 @@ public class User implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private Set<Role> roles = new HashSet<>();
-
-    public String getFullName() {
-        String fullName = lastName + " " + firstName;
-        if (patronymic != null) {
-            fullName += " " + patronymic;
-        }
-        return fullName;
-    }
 }

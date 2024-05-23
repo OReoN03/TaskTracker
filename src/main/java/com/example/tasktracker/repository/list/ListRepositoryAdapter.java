@@ -17,8 +17,8 @@ public class ListRepositoryAdapter implements ListRepository {
     }
 
     @Override
-    public List save(List card) {
-        return listJpaRepository.save(card);
+    public List save(List list) {
+        return listJpaRepository.save(list);
     }
 
     @Override

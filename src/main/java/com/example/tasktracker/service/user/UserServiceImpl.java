@@ -1,11 +1,12 @@
 package com.example.tasktracker.service.user;
 
 import com.example.tasktracker.rest.dto.UserLoginDto;
-import com.example.tasktracker.rest.dto.UserRegisterDto;
+import com.example.tasktracker.rest.dto.SaveUserDto;
 import com.example.tasktracker.repository.user.UserRepository;
 import com.example.tasktracker.exceptions.ResourceNotFoundException;
 import com.example.tasktracker.model.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,8 +22,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void createUser(UserRegisterDto userRegisterDto) {
-        userRepository.save(userRegisterDtoToUser(userRegisterDto));
+    public void createUser(SaveUserDto saveUserDto) {
+        userRepository.save(userRegisterDtoToUser(saveUserDto));
     }
 
     @Override
@@ -46,15 +47,16 @@ public class UserServiceImpl implements UserService {
         return "";
     }
 
-    private User userRegisterDtoToUser(UserRegisterDto userRegisterDto) {
-        if (userRegisterDto == null) return null;
+    private User userRegisterDtoToUser(SaveUserDto saveUserDto) {
+        if (saveUserDto == null) return null;
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         User user = new User();
-        user.setLogin(userRegisterDto.getLogin());
-        user.setFirstName(userRegisterDto.getFirstName());
-        user.setPatronymic(userRegisterDto.getPatronymic());
-        user.setLastName(userRegisterDto.getLastName());
-        user.setHashPassword(userRegisterDto.getHashPassword());
-        user.setEmail(userRegisterDto.getEmail());
+        user.setLogin(saveUserDto.getLogin());
+        user.setFirstName(saveUserDto.getFirstName());
+        user.setPatronymic(saveUserDto.getPatronymic());
+        user.setLastName(saveUserDto.getLastName());
+        user.setHashPassword(encoder.encode(saveUserDto.getPassword()));
+        user.setEmail(saveUserDto.getEmail());
         return user;
     }
 }

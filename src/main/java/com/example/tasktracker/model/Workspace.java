@@ -14,7 +14,7 @@ public class Workspace implements Serializable {
     private static final long serialVersionUID = -5449326074498337971L;
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     private String title;
@@ -24,7 +24,7 @@ public class Workspace implements Serializable {
     @OneToMany(mappedBy = "workspace")
     private java.util.List<Board> boards;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "workspace_admin",
             joinColumns = @JoinColumn(name = "workspace_id"),
@@ -32,7 +32,7 @@ public class Workspace implements Serializable {
     )
     private java.util.List<User> admins;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "workspace_guest",
             joinColumns = @JoinColumn(name = "workspace_id"),
