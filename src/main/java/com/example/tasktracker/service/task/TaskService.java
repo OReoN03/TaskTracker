@@ -15,7 +15,7 @@ public interface TaskService {
 
     Task findTaskById(Integer id) throws ResourceNotFoundException;
 
-    void updateTask(Task task);
+    void updateTask(int id, Integer listId, Task task) throws ResourceNotFoundException;
 
     void deleteTask(Integer id);
 

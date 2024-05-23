@@ -2,8 +2,10 @@ package com.example.tasktracker.rest.controller;
 
 import com.example.tasktracker.exceptions.ResourceNotFoundException;
 import com.example.tasktracker.model.Workspace;
+import com.example.tasktracker.rest.dto.WorkspaceDto;
 import com.example.tasktracker.service.workspace.WorkspaceService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,30 +24,22 @@ public class WorkspaceController {
     }
 
     @GetMapping(path = "/{id}")
-    public Workspace getWorkspaceById(@PathVariable int id) throws ResourceNotFoundException {
+    public Workspace getWorkspaceById(@PathVariable @NotNull int id) throws ResourceNotFoundException {
         return workspaceService.findWorkspaceById(id);
     }
 
     @PostMapping
-    public void createWorkspace(@RequestBody Workspace workspace) {
-        workspaceService.createWorkspace(workspace);
+    public void createWorkspace(@RequestBody WorkspaceDto workspaceDto) {
+        workspaceService.createWorkspace(workspaceDto);
     }
 
     @PutMapping(path = "/{id}")
-    public void updateWorkspace(@PathVariable int id, @RequestBody Workspace workspace) throws ResourceNotFoundException {
-        Workspace workspaceToUpdate = workspaceService.findWorkspaceById(id);
-
-        workspaceToUpdate.setTitle(workspace.getTitle());
-        workspaceToUpdate.setDescription(workspace.getDescription());
-        workspaceToUpdate.setAdmins(workspace.getAdmins());
-        workspaceToUpdate.setBoards(workspace.getBoards());
-        workspaceToUpdate.setGuests(workspace.getGuests());
-
-        workspaceService.updateWorkspace(workspaceToUpdate);
+    public void updateWorkspace(@PathVariable @NotNull int id, @RequestBody Workspace workspace) throws ResourceNotFoundException {
+        workspaceService.updateWorkspace(id, workspace);
     }
 
     @DeleteMapping(path = "/{id}")
-    public void deleteWorkspace(@PathVariable int id) {
+    public void deleteWorkspace(@PathVariable @NotNull int id) {
         workspaceService.deleteWorkspace(id);
     }
 }

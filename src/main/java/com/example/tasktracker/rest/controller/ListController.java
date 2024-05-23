@@ -1,10 +1,12 @@
 package com.example.tasktracker.rest.controller;
 
 import com.example.tasktracker.exceptions.ResourceNotFoundException;
+import com.example.tasktracker.rest.dto.ListDto;
 import com.example.tasktracker.service.list.ListService;
 import com.example.tasktracker.model.List;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,28 +23,22 @@ public class ListController {
     }
 
     @GetMapping(path = "/{id}")
-    public List getListById(@PathVariable int id) throws ResourceNotFoundException {
+    public List getListById(@PathVariable @NotNull int id) throws ResourceNotFoundException {
         return listService.findListById(id);
     }
 
     @PostMapping
-    public void createList(@RequestBody List list) {
-        listService.createList(list);
+    public void createList(@RequestBody ListDto listDto) throws ResourceNotFoundException {
+        listService.createList(listDto);
     }
 
     @PutMapping(path = "/{id}")
-    public void updateList(@PathVariable int id, @RequestBody List list) throws ResourceNotFoundException {
-        List listToUpdate = listService.findListById(id);
-
-        listToUpdate.setTitle(list.getTitle());
-        listToUpdate.setBoard(list.getBoard());
-        listToUpdate.setTasks(list.getTasks());
-
-        listService.updateList(listToUpdate);
+    public void updateList(@PathVariable @NotNull int id, @RequestBody List list) throws ResourceNotFoundException {
+       listService.updateList(id, list);
     }
 
     @DeleteMapping(path = "/{id}")
-    public void deleteList(@PathVariable int id) {
+    public void deleteList(@PathVariable @NotNull int id) {
         listService.deleteList(id);
     }
 }

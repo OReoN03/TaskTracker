@@ -1,8 +1,10 @@
 package com.example.tasktracker.service.list;
 
 import com.example.tasktracker.exceptions.ResourceNotFoundException;
+import com.example.tasktracker.mapper.ListMapper;
 import com.example.tasktracker.model.List;
 import com.example.tasktracker.repository.list.ListRepository;
+import com.example.tasktracker.rest.dto.ListDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -10,7 +12,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ListServiceImpl implements ListService {
     private final ListRepository listRepository;
-
+    private final ListMapper listMapper;
 
     @Override
     public java.util.List<List> getAllLists() {
@@ -18,8 +20,8 @@ public class ListServiceImpl implements ListService {
     }
 
     @Override
-    public void createList(List list) {
-        listRepository.save(list);
+    public void createList(ListDto listDto) throws ResourceNotFoundException {
+        listRepository.save(listMapper.toList(listDto));
     }
 
     @Override
@@ -28,8 +30,14 @@ public class ListServiceImpl implements ListService {
     }
 
     @Override
-    public void updateList(List list) {
-        listRepository.save(list);
+    public void updateList(int id, List list) throws ResourceNotFoundException {
+        List listToUpdate = findListById(id);
+
+        listToUpdate.setTitle(list.getTitle());
+        listToUpdate.setBoard(list.getBoard());
+        listToUpdate.setTasks(list.getTasks());
+
+        listRepository.save(listToUpdate);
     }
 
     @Override

@@ -5,6 +5,7 @@ import com.example.tasktracker.model.User;
 import com.example.tasktracker.rest.dto.SaveUserDto;
 import com.example.tasktracker.service.user.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +25,7 @@ public class UserController {
     }
 
     @GetMapping(path = "/{id}")
-    public User getUserById(@PathVariable int id) throws ResourceNotFoundException {
+    public User getUserById(@PathVariable @NotNull int id) throws ResourceNotFoundException {
         return userService.findUserById(id);
     }
 
@@ -34,21 +35,12 @@ public class UserController {
     }
 
     @PutMapping(path = "/{id}")
-    public void updateUser(@PathVariable int id, @RequestBody SaveUserDto saveUserDto) throws ResourceNotFoundException {
-        User userToUpdate = userService.findUserById(id);
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-
-        userToUpdate.setFirstName(saveUserDto.getFirstName());
-        userToUpdate.setPatronymic(saveUserDto.getPatronymic());
-        userToUpdate.setLastName(saveUserDto.getLastName());
-        userToUpdate.setHashPassword(encoder.encode(saveUserDto.getPassword()));
-        userToUpdate.setEmail(saveUserDto.getEmail());
-
-        userService.updateUser(userToUpdate);
+    public void updateUser(@PathVariable @NotNull int id, @RequestBody SaveUserDto saveUserDto) throws ResourceNotFoundException {
+        userService.updateUser(id, saveUserDto);
     }
 
     @DeleteMapping(path = "/{id}")
-    public void deleteUser(@PathVariable int id) {
+    public void deleteUser(@PathVariable @NotNull int id) {
         userService.deleteUser(id);
     }
 }

@@ -1,6 +1,6 @@
 package com.example.tasktracker.service.user;
 
-import com.example.tasktracker.rest.dto.UserLoginDto;
+import com.example.tasktracker.mapper.UserMapper;
 import com.example.tasktracker.rest.dto.SaveUserDto;
 import com.example.tasktracker.repository.user.UserRepository;
 import com.example.tasktracker.exceptions.ResourceNotFoundException;
@@ -8,6 +8,7 @@ import com.example.tasktracker.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -15,6 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
+    private UserMapper userMapper;
 
     @Override
     public List<User> getAllUsers() {
@@ -23,7 +25,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void createUser(SaveUserDto saveUserDto) {
-        userRepository.save(userRegisterDtoToUser(saveUserDto));
+        userRepository.save(userMapper.saveUserDtoToUser(saveUserDto));
     }
 
     @Override
@@ -32,31 +34,22 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUser(User user) {
-        userRepository.save(user);
+    public void updateUser(int id, SaveUserDto saveUserDto) throws ResourceNotFoundException {
+        User userToUpdate = findUserById(id);
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+
+        userToUpdate.setFirstName(saveUserDto.getFirstName());
+        userToUpdate.setPatronymic(saveUserDto.getPatronymic());
+        userToUpdate.setLastName(saveUserDto.getLastName());
+        userToUpdate.setHashPassword(encoder.encode(saveUserDto.getPassword()));
+        userToUpdate.setEmail(saveUserDto.getEmail());
+
+        userRepository.save(userToUpdate);
     }
 
 
     @Override
     public void deleteUser(Integer id) {
         userRepository.deleteById(id);
-    }
-
-    @Override
-    public String loginUser(UserLoginDto userLoginDto) {
-        return "";
-    }
-
-    private User userRegisterDtoToUser(SaveUserDto saveUserDto) {
-        if (saveUserDto == null) return null;
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        User user = new User();
-        user.setLogin(saveUserDto.getLogin());
-        user.setFirstName(saveUserDto.getFirstName());
-        user.setPatronymic(saveUserDto.getPatronymic());
-        user.setLastName(saveUserDto.getLastName());
-        user.setHashPassword(encoder.encode(saveUserDto.getPassword()));
-        user.setEmail(saveUserDto.getEmail());
-        return user;
     }
 }

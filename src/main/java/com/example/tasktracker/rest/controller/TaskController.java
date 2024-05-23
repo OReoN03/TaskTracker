@@ -6,6 +6,7 @@ import com.example.tasktracker.model.Task;
 import com.example.tasktracker.service.task.TaskService;
 import com.example.tasktracker.service.list.ListService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,7 +26,7 @@ public class TaskController {
     }
 
     @GetMapping("/{id}")
-    public Task getTaskById(@PathVariable int id) throws ResourceNotFoundException {
+    public Task getTaskById(@PathVariable @NotNull int id) throws ResourceNotFoundException {
         return taskService.findTaskById(id);
     }
 
@@ -37,36 +38,27 @@ public class TaskController {
     }
 
     @PutMapping(path = "/{id}")
-    public void updateTask(@PathVariable int id, @RequestParam Integer listId, @RequestBody Task task) throws ResourceNotFoundException {
-        com.example.tasktracker.model.List list = listService.findListById(listId);
-        Task taskToUpdate = taskService.findTaskById(id);
-
-        taskToUpdate.setTitle(task.getTitle());
-        taskToUpdate.setDescription(task.getDescription());
-        taskToUpdate.setDeadline(task.getDeadline());
-        taskToUpdate.setAssignee(task.getAssignee());
-        taskToUpdate.setList(list);
-
-        taskService.updateTask(taskToUpdate);
+    public void updateTask(@PathVariable @NotNull int id, @RequestParam @NotNull Integer listId, @RequestBody Task task) throws ResourceNotFoundException {
+        taskService.updateTask(id, listId, task);
     }
 
     @DeleteMapping(path = "/{id}")
-    public void deleteTask(@PathVariable int id) {
+    public void deleteTask(@PathVariable @NotNull int id) {
         taskService.deleteTask(id);
     }
 
     @PostMapping("/{taskId}/take")
-    public Task takeTask(@PathVariable int taskId, @RequestParam int userId) throws ResourceNotFoundException, TaskAlreadyClosedException {
+    public Task takeTask(@PathVariable @NotNull int taskId, @RequestParam int userId) throws ResourceNotFoundException, TaskAlreadyClosedException {
         return taskService.takeTask(taskId, userId);
     }
 
     @PostMapping("/{taskId}/close")
-    public Task closeTask(@PathVariable int taskId) throws ResourceNotFoundException {
+    public Task closeTask(@PathVariable @NotNull int taskId) throws ResourceNotFoundException {
         return taskService.closeTask(taskId);
     }
 
     @PostMapping("/{taskId}/return")
-    public Task returnTask(@PathVariable int taskId) throws ResourceNotFoundException {
+    public Task returnTask(@PathVariable @NotNull int taskId) throws ResourceNotFoundException {
         return taskService.returnTask(taskId);
     }
 }

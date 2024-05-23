@@ -4,6 +4,7 @@ import com.example.tasktracker.exceptions.TaskAlreadyClosedException;
 import com.example.tasktracker.exceptions.ResourceNotFoundException;
 import com.example.tasktracker.model.Board;
 import com.example.tasktracker.model.Task;
+import com.example.tasktracker.repository.list.ListRepository;
 import com.example.tasktracker.repository.task.TaskRepository;
 import com.example.tasktracker.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,7 @@ import java.util.List;
 public class TaskServiceImpl implements TaskService {
     private final TaskRepository taskRepository;
     private final UserRepository userRepository;
+    private final ListRepository listRepository;
 
     @Override
     public List<Task> getAllTasks() {
@@ -33,8 +35,18 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public void updateTask(Task task) {
-        taskRepository.save(task);
+    public void updateTask(int id, Integer listId, Task task) throws ResourceNotFoundException {
+        com.example.tasktracker.model.List list = listRepository.findById(listId)
+                .orElseThrow(() -> new ResourceNotFoundException("Didn't find list by id: " + id));
+
+        Task taskToUpdate = findTaskById(id);
+        taskToUpdate.setTitle(task.getTitle());
+        taskToUpdate.setDescription(task.getDescription());
+        taskToUpdate.setDeadline(task.getDeadline());
+        taskToUpdate.setAssignee(task.getAssignee());
+        taskToUpdate.setList(list);
+
+        taskRepository.save(taskToUpdate);
     }
 
     @Override
