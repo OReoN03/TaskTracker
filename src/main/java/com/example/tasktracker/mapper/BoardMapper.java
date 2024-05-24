@@ -15,7 +15,6 @@ public class BoardMapper {
 
     public Board toBoard(BoardDto boardDto) throws ResourceNotFoundException {
         Board board = new Board();
-        board.setId(boardDto.getId());
         board.setTitle(boardDto.getTitle());
         board.setDescription(boardDto.getDescription());
 
@@ -28,7 +27,6 @@ public class BoardMapper {
 
     public BoardDto toBoardDto(Board board) {
         BoardDto boardDto = new BoardDto();
-        boardDto.setId(board.getId());
         boardDto.setTitle(board.getTitle());
         boardDto.setDescription(board.getDescription());
         boardDto.setWorkspaceId(board.getWorkspace().getId());

@@ -11,8 +11,8 @@ public class OpenApiConfig {
     public OpenAPI cinemaProject() {
         return new OpenAPI()
                 .info(new Info()
-                        .title("Трекер задач")
-                        .description("Rest трекер задач")
+                        .title("Task tracker")
+                        .description("REST task tracker")
                         .version("0.1"));
     }
 }

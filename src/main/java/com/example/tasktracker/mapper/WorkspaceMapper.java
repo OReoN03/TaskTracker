@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 public class WorkspaceMapper {
     public WorkspaceDto toWorkspaceDto(Workspace workspace) {
         WorkspaceDto workspaceDto = new WorkspaceDto();
-        workspaceDto.setId(workspace.getId());
         workspaceDto.setTitle(workspace.getTitle());
         workspaceDto.setDescription(workspace.getDescription());
         return workspaceDto;

@@ -11,23 +11,21 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class ListMapper {
-    private BoardRepository boardRepository;
+    private final BoardRepository boardRepository;
 
     public List toList(ListDto listDto) throws ResourceNotFoundException {
         List list = new List();
-        list.setId(listDto.getId());
         list.setTitle(listDto.getTitle());
 
         Integer boardId = listDto.getBoardId();
         Board board = boardRepository.findById(boardId)
-                .orElseThrow(() -> new ResourceNotFoundException("Didn't find user by id: " + boardId));
+                .orElseThrow(() -> new ResourceNotFoundException("Didn't find user board id: " + boardId));
         list.setBoard(board);
         return list;
     }
 
     public ListDto toListDto(List list) {
         ListDto listDto = new ListDto();
-        listDto.setId(list.getId());
         listDto.setTitle(list.getTitle());
         listDto.setBoardId(list.getBoard().getId());
         return listDto;

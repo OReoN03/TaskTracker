@@ -2,11 +2,14 @@ package com.example.tasktracker.service.task;
 
 import com.example.tasktracker.exceptions.TaskAlreadyClosedException;
 import com.example.tasktracker.exceptions.ResourceNotFoundException;
+import com.example.tasktracker.exceptions.TaskAlreadyInFirstListException;
+import com.example.tasktracker.mapper.TaskMapper;
 import com.example.tasktracker.model.Board;
 import com.example.tasktracker.model.Task;
 import com.example.tasktracker.repository.list.ListRepository;
 import com.example.tasktracker.repository.task.TaskRepository;
 import com.example.tasktracker.repository.user.UserRepository;
+import com.example.tasktracker.rest.dto.TaskDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +21,7 @@ public class TaskServiceImpl implements TaskService {
     private final TaskRepository taskRepository;
     private final UserRepository userRepository;
     private final ListRepository listRepository;
+    private final TaskMapper taskMapper;
 
     @Override
     public List<Task> getAllTasks() {
@@ -25,8 +29,8 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public void createTask(Task Task) {
-        taskRepository.save(Task);
+    public void createTask(TaskDto taskDto) throws ResourceNotFoundException {
+        taskRepository.save(taskMapper.toTask(taskDto));
     }
 
     @Override
@@ -57,20 +61,16 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public Task takeTask(Integer taskId, Integer userId) throws ResourceNotFoundException, TaskAlreadyClosedException {
         Task task = findTaskById(taskId);
-        com.example.tasktracker.model.List list = task.getList();
-        Board board = list.getBoard();
 
-        int listIndex = board.getLists().indexOf(list);
-        if (listIndex == board.getLists().size() - 1) throw new TaskAlreadyClosedException("Can't take closed task.");
-
-        task.setAssignee(userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("Didn't find user by id: " + userId)));
+        task.setAssignee(userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("Didn't find user by id: " + userId)));
         moveTaskToNextList(task);
 
         return taskRepository.save(task);
     }
 
     @Override
-    public Task returnTask(int taskId) throws ResourceNotFoundException {
+    public Task returnTask(int taskId) throws ResourceNotFoundException, TaskAlreadyInFirstListException {
         Task task = findTaskById(taskId);
         task.setAssignee(null);
 
@@ -85,7 +85,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public Task closeTask(Integer taskId) throws ResourceNotFoundException {
+    public Task closeTask(Integer taskId) throws ResourceNotFoundException, TaskAlreadyClosedException {
         Task task = findTaskById(taskId);
         task.setAssignee(null);
 
@@ -93,11 +93,15 @@ public class TaskServiceImpl implements TaskService {
         return taskRepository.save(task);
     }
 
-    public void moveTaskToNextList(Task task) {
+    public void moveTaskToNextList(Task task) throws TaskAlreadyClosedException {
         com.example.tasktracker.model.List list = task.getList();
         Board board = list.getBoard();
 
         int listIndex = board.getLists().indexOf(list);
+        if (listIndex == board.getLists().size() - 1) {
+            throw new TaskAlreadyClosedException("Can't take closed task.");
+        }
+
         com.example.tasktracker.model.List nextList = board.getLists().get(listIndex + 1);
 
         list.removeTask(task);
@@ -106,18 +110,20 @@ public class TaskServiceImpl implements TaskService {
         task.setList(nextList);
     }
 
-    public void moveTaskToPreviousList(Task task) {
+    public void moveTaskToPreviousList(Task task) throws TaskAlreadyInFirstListException {
         com.example.tasktracker.model.List list = task.getList();
         Board board = list.getBoard();
 
         int listIndex = board.getLists().indexOf(list);
-        if (listIndex != 0) {
-            com.example.tasktracker.model.List previousList = board.getLists().get(listIndex - 1);
-
-            list.removeTask(task);
-            previousList.addTask(task);
-
-            task.setList(previousList);
+        if (listIndex == 0) {
+            throw new TaskAlreadyInFirstListException("Can't move task to previous list. Task is already in the first list.");
         }
+
+        com.example.tasktracker.model.List previousList = board.getLists().get(listIndex - 1);
+
+        list.removeTask(task);
+        previousList.addTask(task);
+
+        task.setList(previousList);
     }
 }
