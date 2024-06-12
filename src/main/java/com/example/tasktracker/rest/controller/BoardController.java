@@ -25,7 +25,7 @@ public class BoardController {
         return boardService.getAllBoards();
     }
 
-    @Operation(description = "Get by id", method = "getBoard")
+    @Operation(description = "Get board by id", method = "getBoard")
     @GetMapping(path = "/{id}")
     public Board getBoard(@PathVariable @NotNull int id) throws ResourceNotFoundException {
         return boardService.findBoardById(id);

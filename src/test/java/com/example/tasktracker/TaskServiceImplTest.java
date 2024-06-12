@@ -140,7 +140,7 @@ public class TaskServiceImplTest {
         task.setTitle("Task");
         task.setDescription("Description");
 
-        assertDoesNotThrow(() -> taskService.deleteTask(1));
+        assertDoesNotThrow(() -> taskService.deleteTask(task.getId()));
 
         verify(taskRepository, times(1)).deleteById(task.getId());
     }
@@ -228,11 +228,9 @@ public class TaskServiceImplTest {
 
         when(taskRepository.findById(1)).thenReturn(Optional.of(task));
 
-        //assertDoesNotThrow(() -> taskService.closeTask(1));
         assertThrows(TaskAlreadyClosedException.class, () -> taskService.closeTask(1));
 
         verify(taskRepository, times(1)).findById(1);
-        //verify(taskRepository, times(1)).save(task);
     }
 
     @Test

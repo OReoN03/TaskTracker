@@ -15,7 +15,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
-    private UserMapper userMapper;
+
+    private final UserMapper userMapper;
 
     @Override
     public List<User> getAllUsers() {
@@ -45,7 +46,6 @@ public class UserServiceImpl implements UserService {
 
         userRepository.save(userToUpdate);
     }
-
 
     @Override
     public void deleteUser(Integer id) {
