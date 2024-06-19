@@ -1,7 +1,7 @@
 package com.example.tasktracker.model;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Data;
 
 import java.io.Serial;
 import java.io.Serializable;

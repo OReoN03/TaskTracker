@@ -1,6 +1,5 @@
 package com.example.tasktracker;
 
-import com.example.tasktracker.exceptions.ResourceNotFoundException;
 import com.example.tasktracker.exceptions.TaskAlreadyClosedException;
 import com.example.tasktracker.mapper.TaskMapper;
 import com.example.tasktracker.model.Board;
@@ -69,7 +68,7 @@ public class TaskServiceImplTest {
     }
 
     @Test
-    public void testCreateTask() throws ResourceNotFoundException {
+    public void testCreateTask()  {
         TaskDto taskDto = new TaskDto();
         taskDto.setTitle("New Title");
         taskDto.setDescription("New Description");
@@ -89,7 +88,7 @@ public class TaskServiceImplTest {
     }
 
     @Test
-    public void testFindTaskById() throws ResourceNotFoundException {
+    public void testFindTaskById()  {
         Task task = new Task();
         task.setId(1);
         task.setTitle("Task 1");

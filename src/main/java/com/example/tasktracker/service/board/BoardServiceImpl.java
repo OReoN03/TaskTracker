@@ -22,17 +22,17 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public void createBoard(BoardDto boardDto) throws ResourceNotFoundException {
-        boardRepository.save(boardMapper.toBoard(boardDto));
+    public Board createBoard(BoardDto boardDto) {
+        return boardRepository.save(boardMapper.toBoard(boardDto));
     }
 
     @Override
-    public Board findBoardById(Integer id) throws ResourceNotFoundException {
+    public Board findBoardById(Integer id) {
         return boardRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Didn't find board by id: " + id));
     }
 
     @Override
-    public void updateBoard(int id, Board board) throws ResourceNotFoundException {
+    public void updateBoard(int id, Board board) {
         Board boardToUpdate = findBoardById(id);
 
         boardToUpdate.setTitle(board.getTitle());

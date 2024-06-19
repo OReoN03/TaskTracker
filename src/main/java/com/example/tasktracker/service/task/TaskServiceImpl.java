@@ -1,7 +1,7 @@
 package com.example.tasktracker.service.task;
 
-import com.example.tasktracker.exceptions.TaskAlreadyClosedException;
 import com.example.tasktracker.exceptions.ResourceNotFoundException;
+import com.example.tasktracker.exceptions.TaskAlreadyClosedException;
 import com.example.tasktracker.exceptions.TaskAlreadyInFirstListException;
 import com.example.tasktracker.mapper.TaskMapper;
 import com.example.tasktracker.model.Board;
@@ -29,17 +29,17 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public void createTask(TaskDto taskDto) throws ResourceNotFoundException {
-        taskRepository.save(taskMapper.toTask(taskDto));
+    public Task createTask(TaskDto taskDto) {
+        return taskRepository.save(taskMapper.toTask(taskDto));
     }
 
     @Override
-    public Task findTaskById(Integer id) throws ResourceNotFoundException {
+    public Task findTaskById(Integer id) {
         return taskRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Didn't find task by id: " + id));
     }
 
     @Override
-    public void updateTask(int id, Integer listId, Task task) throws ResourceNotFoundException {
+    public void updateTask(int id, Integer listId, Task task) {
         com.example.tasktracker.model.List list = listRepository.findById(listId)
                 .orElseThrow(() -> new ResourceNotFoundException("Didn't find list by id: " + id));
 
@@ -59,7 +59,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public Task takeTask(Integer taskId, Integer userId) throws ResourceNotFoundException, TaskAlreadyClosedException {
+    public Task takeTask(Integer taskId, Integer userId) {
         Task task = findTaskById(taskId);
 
         task.setAssignee(userRepository.findById(userId)
@@ -70,7 +70,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public Task returnTask(int taskId) throws ResourceNotFoundException, TaskAlreadyInFirstListException {
+    public Task returnTask(int taskId) {
         Task task = findTaskById(taskId);
         task.setAssignee(null);
 
@@ -85,7 +85,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public Task closeTask(Integer taskId) throws ResourceNotFoundException, TaskAlreadyClosedException {
+    public Task closeTask(Integer taskId) {
         Task task = findTaskById(taskId);
         task.setAssignee(null);
 
@@ -93,7 +93,7 @@ public class TaskServiceImpl implements TaskService {
         return taskRepository.save(task);
     }
 
-    public void moveTaskToNextList(Task task) throws TaskAlreadyClosedException {
+    public void moveTaskToNextList(Task task) {
         com.example.tasktracker.model.List list = task.getList();
         Board board = list.getBoard();
 
@@ -110,7 +110,7 @@ public class TaskServiceImpl implements TaskService {
         task.setList(nextList);
     }
 
-    public void moveTaskToPreviousList(Task task) throws TaskAlreadyInFirstListException {
+    public void moveTaskToPreviousList(Task task) {
         com.example.tasktracker.model.List list = task.getList();
         Board board = list.getBoard();
 

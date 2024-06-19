@@ -20,17 +20,17 @@ public class ListServiceImpl implements ListService {
     }
 
     @Override
-    public void createList(ListDto listDto) throws ResourceNotFoundException {
-        listRepository.save(listMapper.toList(listDto));
+    public List createList(ListDto listDto) {
+        return listRepository.save(listMapper.toList(listDto));
     }
 
     @Override
-    public List findListById(Integer id) throws ResourceNotFoundException {
+    public List findListById(Integer id) {
         return listRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Didn't find list by id: " + id));
     }
 
     @Override
-    public void updateList(int id, List list) throws ResourceNotFoundException {
+    public void updateList(int id, List list) {
         List listToUpdate = findListById(id);
 
         listToUpdate.setTitle(list.getTitle());

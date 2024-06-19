@@ -14,7 +14,7 @@
 package com.example.tasktracker.model;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Data;
 import org.hibernate.annotations.NaturalId;
 
 import java.io.Serial;

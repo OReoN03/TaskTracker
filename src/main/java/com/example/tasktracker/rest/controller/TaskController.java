@@ -1,8 +1,5 @@
 package com.example.tasktracker.rest.controller;
 
-import com.example.tasktracker.exceptions.TaskAlreadyClosedException;
-import com.example.tasktracker.exceptions.ResourceNotFoundException;
-import com.example.tasktracker.exceptions.TaskAlreadyInFirstListException;
 import com.example.tasktracker.model.Task;
 import com.example.tasktracker.rest.dto.TaskDto;
 import com.example.tasktracker.service.task.TaskService;
@@ -28,19 +25,20 @@ public class TaskController {
 
     @Operation(description = "Get task by id", method = "getTaskById")
     @GetMapping("/{id}")
-    public Task getTaskById(@PathVariable @NotNull int id) throws ResourceNotFoundException {
+    public Task getTaskById(@PathVariable @NotNull int id) {
         return taskService.findTaskById(id);
     }
 
     @Operation(description = "Create task by id", method = "createTask")
     @PostMapping
-    public void createTask(@RequestBody TaskDto taskDto) throws ResourceNotFoundException {
-        taskService.createTask(taskDto);
+    public Task createTask(@RequestBody TaskDto taskDto) {
+        return taskService.createTask(taskDto);
     }
 
     @Operation(description = "Update task by id", method = "updateTask")
     @PutMapping(path = "/{id}")
-    public void updateTask(@PathVariable @NotNull int id, @RequestParam @NotNull Integer listId, @RequestBody Task task) throws ResourceNotFoundException {
+    public void updateTask(@PathVariable @NotNull int id,
+                           @RequestParam @NotNull Integer listId, @RequestBody Task task) {
         taskService.updateTask(id, listId, task);
     }
 
@@ -52,19 +50,19 @@ public class TaskController {
 
     @Operation(description = "Take task by id", method = "takeTask")
     @PostMapping("/take/{id}")
-    public Task takeTask(@PathVariable @NotNull int id, @RequestParam int userId) throws ResourceNotFoundException, TaskAlreadyClosedException {
+    public Task takeTask(@PathVariable @NotNull int id, @RequestParam int userId) {
         return taskService.takeTask(id, userId);
     }
 
     @Operation(description = "Close task by id", method = "closeTask")
     @PostMapping("/close/{id}")
-    public Task closeTask(@PathVariable @NotNull int id) throws ResourceNotFoundException, TaskAlreadyClosedException {
+    public Task closeTask(@PathVariable @NotNull int id) {
         return taskService.closeTask(id);
     }
 
     @Operation(description = "Return task by id", method = "returnTask")
     @PostMapping("/return/{id}")
-    public Task returnTask(@PathVariable @NotNull int id) throws ResourceNotFoundException, TaskAlreadyInFirstListException {
+    public Task returnTask(@PathVariable @NotNull int id) {
         return taskService.returnTask(id);
     }
 }

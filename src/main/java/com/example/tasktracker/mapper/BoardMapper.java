@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 public class BoardMapper {
     private final WorkspaceRepository workspaceRepository;
 
-    public Board toBoard(BoardDto boardDto) throws ResourceNotFoundException {
+    public Board toBoard(BoardDto boardDto) {
         Board board = new Board();
         board.setTitle(boardDto.getTitle());
         board.setDescription(boardDto.getDescription());

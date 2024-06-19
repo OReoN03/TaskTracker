@@ -1,6 +1,5 @@
 package com.example.tasktracker.rest.controller;
 
-import com.example.tasktracker.exceptions.ResourceNotFoundException;
 import com.example.tasktracker.model.Board;
 import com.example.tasktracker.rest.dto.BoardDto;
 import com.example.tasktracker.service.board.BoardService;
@@ -27,19 +26,19 @@ public class BoardController {
 
     @Operation(description = "Get board by id", method = "getBoard")
     @GetMapping(path = "/{id}")
-    public Board getBoard(@PathVariable @NotNull int id) throws ResourceNotFoundException {
+    public Board getBoard(@PathVariable @NotNull int id) {
         return boardService.findBoardById(id);
     }
 
     @Operation(description = "Create board", method = "createBoard")
     @PostMapping
-    public void createBoard(@RequestBody BoardDto boardDto) throws ResourceNotFoundException {
-        boardService.createBoard(boardDto);
+    public Board createBoard(@RequestBody BoardDto boardDto) {
+        return boardService.createBoard(boardDto);
     }
 
     @Operation(description = "Update board by id", method = "updateBoard")
     @PutMapping(path = "/{id}")
-    public void updateBoard(@PathVariable @NotNull int id, @RequestBody Board board) throws ResourceNotFoundException {
+    public void updateBoard(@PathVariable @NotNull int id, @RequestBody Board board) {
         boardService.updateBoard(id, board);
     }
 

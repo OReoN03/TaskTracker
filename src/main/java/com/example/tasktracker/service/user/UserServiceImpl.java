@@ -1,12 +1,12 @@
 package com.example.tasktracker.service.user;
 
-import com.example.tasktracker.mapper.UserMapper;
-import com.example.tasktracker.rest.dto.SaveUserDto;
-import com.example.tasktracker.repository.user.UserRepository;
 import com.example.tasktracker.exceptions.ResourceNotFoundException;
+import com.example.tasktracker.mapper.UserMapper;
 import com.example.tasktracker.model.User;
+import com.example.tasktracker.repository.user.UserRepository;
+import com.example.tasktracker.rest.dto.SaveUserDto;
+import com.example.tasktracker.rest.dto.UserDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,32 +19,26 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
 
     @Override
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    public List<UserDto> getAllUsers() {
+        List<User> users = userRepository.findAll();
+        return users.stream().map(userMapper::userToUserDto).toList();
     }
 
     @Override
-    public void createUser(SaveUserDto saveUserDto) {
+    public UserDto createUser(SaveUserDto saveUserDto) {
+        return userMapper.userToUserDto(userRepository.save(userMapper.saveUserDtoToUser(saveUserDto)));
+    }
+
+    @Override
+    public UserDto findUserById(Integer id) {
+        User user = userRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("Didn't find user by id: " + id));
+        return userMapper.userToUserDto(user);
+    }
+
+    @Override
+    public void updateUser(int id, SaveUserDto saveUserDto) {
         userRepository.save(userMapper.saveUserDtoToUser(saveUserDto));
-    }
-
-    @Override
-    public User findUserById(Integer id) throws ResourceNotFoundException {
-        return userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Didn't find user by id: " + id));
-    }
-
-    @Override
-    public void updateUser(int id, SaveUserDto saveUserDto) throws ResourceNotFoundException {
-        User userToUpdate = findUserById(id);
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-
-        userToUpdate.setFirstName(saveUserDto.getFirstName());
-        userToUpdate.setPatronymic(saveUserDto.getPatronymic());
-        userToUpdate.setLastName(saveUserDto.getLastName());
-        userToUpdate.setHashPassword(encoder.encode(saveUserDto.getPassword()));
-        userToUpdate.setEmail(saveUserDto.getEmail());
-
-        userRepository.save(userToUpdate);
     }
 
     @Override

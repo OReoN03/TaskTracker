@@ -1,7 +1,6 @@
 package com.example.tasktracker.service.workspace;
 
 
-import com.example.tasktracker.exceptions.ResourceNotFoundException;
 import com.example.tasktracker.model.Workspace;
 import com.example.tasktracker.rest.dto.WorkspaceDto;
 
@@ -12,9 +11,9 @@ public interface WorkspaceService {
 
     void createWorkspace(WorkspaceDto workspaceDto);
 
-    Workspace findWorkspaceById(Integer id) throws ResourceNotFoundException;
+    Workspace findWorkspaceById(Integer id);
 
-    void updateWorkspace(int id, Workspace workspace) throws ResourceNotFoundException;
+    void updateWorkspace(int id, Workspace workspace);
 
     void deleteWorkspace(Integer id);
 }

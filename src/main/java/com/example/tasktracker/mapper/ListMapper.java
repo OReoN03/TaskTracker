@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 public class ListMapper {
     private final BoardRepository boardRepository;
 
-    public List toList(ListDto listDto) throws ResourceNotFoundException {
+    public List toList(ListDto listDto)  {
         List list = new List();
         list.setTitle(listDto.getTitle());
 

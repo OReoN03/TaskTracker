@@ -1,10 +1,8 @@
 package com.example.tasktracker.rest.controller;
 
-import com.example.tasktracker.exceptions.ResourceNotFoundException;
+import com.example.tasktracker.model.List;
 import com.example.tasktracker.rest.dto.ListDto;
 import com.example.tasktracker.service.list.ListService;
-import com.example.tasktracker.model.List;
-
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.NotNull;
@@ -26,19 +24,19 @@ public class ListController {
 
     @Operation(description = "Get list by id", method = "getListById")
     @GetMapping(path = "/{id}")
-    public List getListById(@PathVariable @NotNull int id) throws ResourceNotFoundException {
+    public List getListById(@PathVariable @NotNull int id) {
         return listService.findListById(id);
     }
 
     @Operation(description = "Create list", method = "createList")
     @PostMapping
-    public void createList(@RequestBody ListDto listDto) throws ResourceNotFoundException {
-        listService.createList(listDto);
+    public List createList(@RequestBody ListDto listDto) {
+        return listService.createList(listDto);
     }
 
     @Operation(description = "Update list by id", method = "updateList")
     @PutMapping(path = "/{id}")
-    public void updateList(@PathVariable @NotNull int id, @RequestBody List list) throws ResourceNotFoundException {
+    public void updateList(@PathVariable @NotNull int id, @RequestBody List list) {
        listService.updateList(id, list);
     }
 

@@ -27,12 +27,12 @@ public class WorkspaceServiceImpl implements WorkspaceService {
     }
 
     @Override
-    public Workspace findWorkspaceById(Integer id) throws ResourceNotFoundException {
+    public Workspace findWorkspaceById(Integer id) {
         return workspaceRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Didn't find workspace by id: " + id));
     }
 
     @Override
-    public void updateWorkspace(int id, Workspace workspace) throws ResourceNotFoundException {
+    public void updateWorkspace(int id, Workspace workspace) {
         Workspace workspaceToUpdate = findWorkspaceById(id);
 
         workspaceToUpdate.setTitle(workspace.getTitle());

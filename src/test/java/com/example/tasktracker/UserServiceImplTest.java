@@ -1,10 +1,10 @@
 package com.example.tasktracker;
 
-import com.example.tasktracker.exceptions.ResourceNotFoundException;
 import com.example.tasktracker.mapper.UserMapper;
 import com.example.tasktracker.model.User;
 import com.example.tasktracker.repository.user.UserRepository;
 import com.example.tasktracker.rest.dto.SaveUserDto;
+import com.example.tasktracker.rest.dto.UserDto;
 import com.example.tasktracker.service.user.UserServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,7 +17,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -50,7 +51,7 @@ public class UserServiceImplTest {
 
         when(userRepository.findAll()).thenReturn(users);
 
-        List<User> result = userService.getAllUsers();
+        List<UserDto> result = userService.getAllUsers();
 
         assertEquals(2, result.size());
         assertEquals(user1.getFirstName(), result.get(0).getFirstName());
@@ -72,7 +73,7 @@ public class UserServiceImplTest {
     }
 
     @Test
-    public void testFindUserById() throws ResourceNotFoundException {
+    public void testFindUserById()  {
         User user = new User();
         user.setId(1);
         user.setLogin("john.doe@example.com");
@@ -81,7 +82,7 @@ public class UserServiceImplTest {
 
         when(userRepository.findById(1)).thenReturn(Optional.of(user));
 
-        User result = userService.findUserById(1);
+        UserDto result = userService.findUserById(1);
 
         assertNotNull(result);
         assertEquals(user.getFirstName(), result.getFirstName());
@@ -91,7 +92,7 @@ public class UserServiceImplTest {
     }
 
     @Test
-    public void testUpdateUser() throws ResourceNotFoundException {
+    public void testUpdateUser()  {
         SaveUserDto saveUserDto = new SaveUserDto();
         saveUserDto.setFirstName("Jane");
         saveUserDto.setLastName("Doe");
@@ -115,14 +116,12 @@ public class UserServiceImplTest {
         userService.updateUser(1, saveUserDto);
         when(userRepository.findById(1)).thenReturn(Optional.of(userToUpdate));
 
-        User updatedUser = userService.findUserById(1);
+        UserDto updatedUser = userService.findUserById(1);
 
-        assertEquals(userToUpdate.getFirstName(), userService.findUserById(1).getFirstName());
-        assertEquals(userToUpdate.getLastName(), userService.findUserById(1).getLastName());
-        assertEquals(userToUpdate.getEmail(), userService.findUserById(1).getEmail());
-        assertEquals(userToUpdate.getLogin(), userService.findUserById(1).getLogin());
-        assertEquals(userToUpdate.getHashPassword(), userService.findUserById(1).getHashPassword());
-        assertNotEquals(userService.findUserById(1), existingUser);
+        assertEquals(userToUpdate.getFirstName(), updatedUser.getFirstName());
+        assertEquals(userToUpdate.getLastName(), updatedUser.getLastName());
+        assertEquals(userToUpdate.getEmail(), updatedUser.getEmail());
+        assertEquals(userToUpdate.getLogin(), updatedUser.getLogin());
 
         verify(userRepository, times(1)).save(userToUpdate);
     }

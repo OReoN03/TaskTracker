@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 public class TaskMapper {
     private final ListRepository listRepository;
 
-    public Task toTask(TaskDto taskDto) throws ResourceNotFoundException {
+    public Task toTask(TaskDto taskDto)  {
         Task task = new Task();
         task.setTitle(taskDto.getTitle());
         task.setDescription(taskDto.getDescription());

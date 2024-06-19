@@ -2,6 +2,7 @@ package com.example.tasktracker.mapper;
 
 import com.example.tasktracker.model.User;
 import com.example.tasktracker.rest.dto.SaveUserDto;
+import com.example.tasktracker.rest.dto.UserDto;
 import com.example.tasktracker.rest.dto.UserLoginDto;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -28,5 +29,16 @@ public class UserMapper {
         user.setLogin(userLoginDto.getLogin());
         user.setHashPassword(encoder.encode(userLoginDto.getPassword()));
         return user;
+    }
+
+    public UserDto userToUserDto(User user) {
+        if (user == null) return null;
+        UserDto userDto = new UserDto();
+        userDto.setLogin(user.getLogin());
+        userDto.setFirstName(user.getFirstName());
+        userDto.setPatronymic(user.getPatronymic());
+        userDto.setLastName(user.getLastName());
+        userDto.setEmail(user.getEmail());
+        return userDto;
     }
 }

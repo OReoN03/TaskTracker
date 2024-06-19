@@ -1,6 +1,5 @@
 package com.example.tasktracker.rest.controller;
 
-import com.example.tasktracker.exceptions.ResourceNotFoundException;
 import com.example.tasktracker.model.Workspace;
 import com.example.tasktracker.rest.dto.WorkspaceDto;
 import com.example.tasktracker.service.workspace.WorkspaceService;
@@ -27,7 +26,7 @@ public class WorkspaceController {
 
     @Operation(description = "Get workspace by id", method = "getWorkspaceById")
     @GetMapping(path = "/{id}")
-    public Workspace getWorkspaceById(@PathVariable @NotNull int id) throws ResourceNotFoundException {
+    public Workspace getWorkspaceById(@PathVariable @NotNull int id)  {
         return workspaceService.findWorkspaceById(id);
     }
 
@@ -39,7 +38,7 @@ public class WorkspaceController {
 
     @Operation(description = "Update workspace by id", method = "updateWorkspace")
     @PutMapping(path = "/{id}")
-    public void updateWorkspace(@PathVariable @NotNull int id, @RequestBody Workspace workspace) throws ResourceNotFoundException {
+    public void updateWorkspace(@PathVariable @NotNull int id, @RequestBody Workspace workspace)  {
         workspaceService.updateWorkspace(id, workspace);
     }
 
