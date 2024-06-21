@@ -8,3 +8,11 @@ spring:
     password: root
   flyway:
     locations: classpath:db/migration
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://my-auth-server.com
+    jwt:
+      secret-key: 9c899ec0ede481b124d6a3172178c640997de07306d48144e1b8554a09e7a33fa67e2ee43e078d72c53c6a51cdc86cb7674cbdfed8230fa66acc48c2f329188a2b163fd76dd9557c5607ac1670b5e7f7982b43ae4c225d1ad0dde1d2365e838bde98c3f0a1149936f86f6e756a83341bcdcd0a1822046eccd4185d46b34cc92f20bc81dc48030320ab3bae91f1810aa571fb3a0db25691f9c0166817c6b6ef3aa3b3146f2ae703d0fda99cb7e8f60d793126c4d2d40f5f71e05dc5ea973d8d347b7c27a98940315068bb9300ed39a942e9aca8e4db5d35af6b53de8416e63c935f4f43d9249dc067d04f41d838e0846f62ba8ace2f940e64e4127cad87481fc7
+      expiration-time: 3600000

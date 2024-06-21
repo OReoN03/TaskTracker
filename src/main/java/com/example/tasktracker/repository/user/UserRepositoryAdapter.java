@@ -28,6 +28,11 @@ public class UserRepositoryAdapter implements UserRepository {
     }
 
     @Override
+    public Optional<User> findByLogin(String login) {
+        return userJpaRepository.findUserByLogin(login);
+    }
+
+    @Override
     public void deleteById(Integer id) {
         userJpaRepository.deleteById(id);
     }

@@ -12,5 +12,7 @@ public interface UserRepository {
 
     Optional<User> findById(Integer id);
 
+    Optional<User> findByLogin(String login);
+
     void deleteById(Integer id);
 }
