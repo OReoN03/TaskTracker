@@ -1,4 +1,4 @@
-package com.example.tasktracker.security;
+package com.example.tasktracker.service;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
