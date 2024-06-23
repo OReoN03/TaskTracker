@@ -1,3 +1,8 @@
+jasypt:
+  encryptor:
+    password: boromir
+    algorithm: PBEWithMD5AndDES
+    iv-generator-classname: org.jasypt.iv.NoIvGenerator
 spring:
   application:
     name: TaskTracker
@@ -5,7 +10,7 @@ spring:
     driverClassName: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/task_tracker
     username: root
-    password: root
+    password: ENC(JGTiestDWB6Poe6KGsRILw==)
   flyway:
     locations: classpath:db/migration
   security:
@@ -14,5 +19,5 @@ spring:
         jwt:
           issuer-uri: https://my-auth-server.com
     jwt:
-      secret-key: 9c899ec0ede481b124d6a3172178c640997de07306d48144e1b8554a09e7a33fa67e2ee43e078d72c53c6a51cdc86cb7674cbdfed8230fa66acc48c2f329188a2b163fd76dd9557c5607ac1670b5e7f7982b43ae4c225d1ad0dde1d2365e838bde98c3f0a1149936f86f6e756a83341bcdcd0a1822046eccd4185d46b34cc92f20bc81dc48030320ab3bae91f1810aa571fb3a0db25691f9c0166817c6b6ef3aa3b3146f2ae703d0fda99cb7e8f60d793126c4d2d40f5f71e05dc5ea973d8d347b7c27a98940315068bb9300ed39a942e9aca8e4db5d35af6b53de8416e63c935f4f43d9249dc067d04f41d838e0846f62ba8ace2f940e64e4127cad87481fc7
+      secret-key: c2ba462e5821d67e50d16b4597b08ccbdc4f5b376aab3e74e6b4de6318145b5890ce10d3cacc83c51d6b3194929b6d29cec14e4d0e703c57eac23f2571c0bbe06812a28dc83d357f549de56673ab8fe4543b1871df93e44d03acf1ed989eb1dfbd1f507d17a6b663aa4027add3df6ed341c71c3984938b125b04a08cfd4f5851c5f5c6e0c7e98016653431c9ba2d531264f11875dca2251d79da03ceb6c2f932c7f89f1c7474f6b986929bc302ac6bfb12e7a77cc49da76cb0945bd9fc8debbb17c67cff058d7716070e72511dfd8a18e24968cc5c51a7a2637fab5b82c470fbbfc4e78f98eb004e096ba8d9c632a71f21afb1f977901200162466b7657362e7
       expiration-time: 3600000

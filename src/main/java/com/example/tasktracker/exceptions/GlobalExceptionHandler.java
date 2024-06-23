@@ -23,6 +23,7 @@ public class GlobalExceptionHandler {
         String message = exception.getMessage();
 
         log.error(message, exception);
+        System.out.println(exception.getMessage());
 
         if (exception instanceof BadCredentialsException)
             problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.UNAUTHORIZED, message);
