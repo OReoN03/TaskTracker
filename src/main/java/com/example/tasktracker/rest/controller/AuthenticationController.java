@@ -7,7 +7,7 @@ import com.example.tasktracker.rest.dto.SaveUserDto;
 import com.example.tasktracker.rest.dto.UserDto;
 import com.example.tasktracker.rest.dto.UserLoginDto;
 import com.example.tasktracker.service.JwtService;
-import com.example.tasktracker.service.user.AuthenticationService;
+import com.example.tasktracker.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

@@ -15,14 +15,14 @@ import java.security.SignatureException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-    private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     @ExceptionHandler(Exception.class)
     public ProblemDetail handleSecurityException(Exception exception){
         ProblemDetail problemDetail = null;
         String message = exception.getMessage();
 
-        log.error(message, exception);
+        LOGGER.error(message, exception);
         System.out.println(exception.getMessage());
 
         if (exception instanceof BadCredentialsException)
