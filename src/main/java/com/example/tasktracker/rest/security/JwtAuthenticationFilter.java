@@ -1,6 +1,6 @@
-package com.example.tasktracker.configuration;
+package com.example.tasktracker.rest.security;
 
-import com.example.tasktracker.service.JwtService;
+import com.example.tasktracker.service.security.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

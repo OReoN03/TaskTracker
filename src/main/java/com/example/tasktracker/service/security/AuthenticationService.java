@@ -1,4 +1,4 @@
-package com.example.tasktracker.service;
+package com.example.tasktracker.service.security;
 
 import com.example.tasktracker.exceptions.ResourceNotFoundException;
 import com.example.tasktracker.mapper.UserMapper;

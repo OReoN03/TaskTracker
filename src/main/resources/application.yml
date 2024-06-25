@@ -14,10 +14,17 @@ spring:
   flyway:
     locations: classpath:db/migration
   security:
-    oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: https://my-auth-server.com
     jwt:
       secret-key: c2ba462e5821d67e50d16b4597b08ccbdc4f5b376aab3e74e6b4de6318145b5890ce10d3cacc83c51d6b3194929b6d29cec14e4d0e703c57eac23f2571c0bbe06812a28dc83d357f549de56673ab8fe4543b1871df93e44d03acf1ed989eb1dfbd1f507d17a6b663aa4027add3df6ed341c71c3984938b125b04a08cfd4f5851c5f5c6e0c7e98016653431c9ba2d531264f11875dca2251d79da03ceb6c2f932c7f89f1c7474f6b986929bc302ac6bfb12e7a77cc49da76cb0945bd9fc8debbb17c67cff058d7716070e72511dfd8a18e24968cc5c51a7a2637fab5b82c470fbbfc4e78f98eb004e096ba8d9c632a71f21afb1f977901200162466b7657362e7
       expiration-time: 3600000
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: test
+    password: test
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true

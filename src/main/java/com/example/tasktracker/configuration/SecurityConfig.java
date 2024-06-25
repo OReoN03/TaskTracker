@@ -1,5 +1,6 @@
 package com.example.tasktracker.configuration;
 
+import com.example.tasktracker.rest.security.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
