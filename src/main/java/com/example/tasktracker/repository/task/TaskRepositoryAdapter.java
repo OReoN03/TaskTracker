@@ -4,6 +4,7 @@ import com.example.tasktracker.model.Task;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,6 +16,11 @@ public class TaskRepositoryAdapter implements TaskRepository {
     @Override
     public List<Task> findAll() {
         return taskJpaRepository.findAll();
+    }
+
+    @Override
+    public List<Task> findByDeadlineBetween(LocalDateTime start, LocalDateTime end) {
+        return taskJpaRepository.findByDeadlineBetween(start, end);
     }
 
     @Override
